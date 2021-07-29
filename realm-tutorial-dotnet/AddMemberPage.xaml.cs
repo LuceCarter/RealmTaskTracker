@@ -34,6 +34,9 @@ namespace RealmDotnetTutorial
             {
                 // TODO: Call the "getMyTeamMembers" to get all team members
                 // teamMembers = await ...
+
+                teamMembers = await App.RealmApp.CurrentUser.Functions.CallAsync<List<User>>("getMyTeamMembers");
+
                 foreach (var member in teamMembers)
                 {
                     _members.Add(member);
@@ -66,6 +69,8 @@ namespace RealmDotnetTutorial
                 // TODO: Pass email.ToString() to the "removeTeamMember"
                 // function.
                 // var result = await ...
+                var result = await App.RealmApp.CurrentUser.Functions.CallAsync("removeTeamMember", email.ToString());
+
                 await DisplayAlert("Remove User", result.ToString(), "OK");
                 listMembers.ItemsSource = Members;
             }
@@ -96,6 +101,8 @@ namespace RealmDotnetTutorial
                 {
                     // TODO: Pass the result object to the "addTeamMember" 
                     // function.
+                    var functionResult = await App.RealmApp.CurrentUser.Functions.CallAsync<FunctionResult>("addTeamMember", result);
+
                 }
                 catch (AppException ex)
                 {

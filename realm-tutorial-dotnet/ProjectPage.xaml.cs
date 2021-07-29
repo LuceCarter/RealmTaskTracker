@@ -39,7 +39,7 @@ namespace RealmDotnetTutorial
                 await Navigation.PopAsync();
             }
             else
-            {
+            {                
                 await LoadProjects();
             }
             base.OnAppearing();
@@ -58,6 +58,9 @@ namespace RealmDotnetTutorial
                 // TODO: find the user in the userRealm
                 // Because the user's ID is the Primary Key, we can easily
                 // find the user by passing the ID to userRealm.Find<User>().
+                userRealm = await Realm.GetInstanceAsync(syncConfig);
+
+                user = userRealm.Find<User>(App.RealmApp.CurrentUser.Id);
 
                 if (user == null && !Constants.AlreadyWarnedAboutBackendSetup)
                 {

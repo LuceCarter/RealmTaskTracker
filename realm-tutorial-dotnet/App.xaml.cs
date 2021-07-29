@@ -7,7 +7,7 @@ namespace RealmDotnetTutorial
 {
     public partial class App : Application
     {
-        private const string appId = "<my_realm_app_id>";
+        private const string appId = "tasktracker-uaahz";
         public static Realms.Sync.App RealmApp;
 
         public App()
@@ -18,6 +18,7 @@ namespace RealmDotnetTutorial
         protected override void OnStart()
         {
             // TODO: call Realms.Sync.App.Create()
+            RealmApp = Realms.Sync.App.Create(appId);
             if (App.RealmApp.CurrentUser == null)
             {
                 MainPage = new NavigationPage(new LoginPage());

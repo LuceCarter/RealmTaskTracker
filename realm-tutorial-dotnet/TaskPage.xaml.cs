@@ -36,6 +36,8 @@ namespace RealmDotnetTutorial
                 var syncConfig = new SyncConfiguration(projectPartition, App.RealmApp.CurrentUser);
 
                 // TODO: instatiate the taskRealm by calling GetInstanceAsync
+                taskRealm = await Realm.GetInstanceAsync(syncConfig);
+
                 SetUpTaskList();
             }
             catch (Exception ex)
@@ -49,6 +51,8 @@ namespace RealmDotnetTutorial
         {
             WaitingLayout.IsVisible = true;
             // TODO: populate the _tasks collection with all tasks in the taskRealm.
+            _tasks = new ObservableCollection<Task>(taskRealm.All<Task>().ToList());
+
             listTasks.ItemsSource = MyTasks;
             WaitingLayout.IsVisible = false;
         }
@@ -85,6 +89,18 @@ namespace RealmDotnetTutorial
             // TODO: create a new Task, setting the name to "result" and
             // the status to "Open" (using the TaskStatus enum).
             // Then add the task to the taskRealm within a transaction.
+            var newTask = new Task()
+            {
+                Name = result,
+                Partition = projectPartition,
+                Status = Task.TaskStatus.Open.ToString()
+            };
+
+            taskRealm.Write(() =>
+            {
+                taskRealm.Add(newTask);
+            });
+
 
             MyTasks.Add(newTask);
         }
